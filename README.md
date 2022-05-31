@@ -21,9 +21,9 @@ Kubernetes 部署套件 HELM 的基礎架構
 1. 將 ServiceName 資料夾複製到 ArgoCD (或其他 GitOps 平台) 所使用的部署檔 Git Repo 之中
 2. 資料夾更名為你要部署的服務名稱
 3. 將資料夾內的 values-*.yaml 檔案開啟
-    a. 將 {$ServiceName} 替換為你要部署的服務名稱
-    b. 將 {$image-repo} docker image 來源
-    c. 將 {$ServiceDomain} 更換為該服務的 Domain
+    1. 將 {$ServiceName} 替換為你要部署的服務名稱
+    2. 將 {$image-repo} docker image 來源
+    3. 將 {$ServiceDomain} 更換為該服務的 Domain
 
 ## Kubernetes 部署資源設定
 
