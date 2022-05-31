@@ -1,6 +1,6 @@
 # Helm Template with Istio
 
-Kubernetes 部屬套件 HELM 的基礎架構
+Kubernetes 部署套件 HELM 的基礎架構
 
 ## 注意事項
 
@@ -18,14 +18,14 @@ Kubernetes 部屬套件 HELM 的基礎架構
 
 ## 使用方式：
 
-1. 將 ServiceName 資料夾複製到 ArgoCD (或其他 GitOps 平台) 所使用的部屬檔 Git Repo 之中
-2. 資料夾更名為你要部屬的服務名稱
+1. 將 ServiceName 資料夾複製到 ArgoCD (或其他 GitOps 平台) 所使用的部署檔 Git Repo 之中
+2. 資料夾更名為你要部署的服務名稱
 3. 將資料夾內的 values-*.yaml 檔案開啟
-    a. 將 {$ServiceName} 替換為你要部屬的服務名稱
+    a. 將 {$ServiceName} 替換為你要部署的服務名稱
     b. 將 {$image-repo} docker image 來源
     c. 將 {$ServiceDomain} 更換為該服務的 Domain
 
-## Kubernetes 部屬資源設定
+## Kubernetes 部署資源設定
 
 此範本內的資源限制預設如下，可依據服務需求自行調整
 設定方式與單位可參照 [此說明文件](kubernetes_overloading.md)
