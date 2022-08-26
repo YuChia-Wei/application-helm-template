@@ -31,6 +31,7 @@ Kubernetes 部署套件 HELM 的基礎架構
 設定方式與單位可參照 [此說明文件](kubernetes_overloading.md)
 
 ### 各環境建議值
+`此處相關數值僅供參考，limits 的部份請依據服務所需與可用資源定義最大值，requests 的部分須確認服務在中低負載下的基礎需求定義，過高可能會導致 kubernetes 認為目前叢集內無資源可部署服務而部署失敗，過低可能會在資源極度不足的狀況下仍部署該服務而導致整個叢集的效能低落。`
 
 * C# WebApi - Base on 6.0-bullseye-slim / 3.1-buster-slim
 
@@ -38,10 +39,10 @@ Kubernetes 部署套件 HELM 的基礎架構
 resources:
   requests:
     memory: "400Mi"
-    cpu: "200m"
+    cpu: "50m"
   limits:
     memory: "800Mi"
-    cpu: "250M"
+    cpu: "1000m"
 ```
 
 * C# WebApi - Base on 6.0-alpine
@@ -49,11 +50,35 @@ resources:
 ```yaml
 resources:
   requests:
-    memory: "100Mi"
-    cpu: "200m"
+    memory: "200Mi"
+    cpu: "50m"
+  limits:
+    memory: "600Mi"
+    cpu: "1000m"
+```
+
+* C# Web (Angular) - Base on 6.0-bullseye-slim / 3.1-buster-slim
+
+```yaml
+resources:
+  requests:
+    memory: "200Mi"
+    cpu: "50m"
   limits:
     memory: "400Mi"
-    cpu: "250M"
+    cpu: "500m"
+```
+
+* C# Web (Angular + WebApi) - Base on 6.0-bullseye-slim / 3.1-buster-slim
+
+```yaml
+resources:
+  requests:
+    memory: "400Mi"
+    cpu: "50m"
+  limits:
+    memory: "800Mi"
+    cpu: "1000m"
 ```
 
 * Angular SPA - Base on nginx:alpine
@@ -61,12 +86,13 @@ resources:
 ```yaml
 resources:
   requests:
-    memory: "50Mi"
-    cpu: "100m"
+    memory: "100Mi"
+    cpu: "10m"
   limits:
     memory: "200Mi"
-    cpu: "200M"
+    cpu: "100m"
 ```
+
 ## 命名相關建議
 
 1. Helm Package 預設使用資料夾名稱作為套件名稱，因此資料夾名稱建議與服務名稱相符
