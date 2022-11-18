@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ (print .Values.service "-accesslog-pvc") | quote }}
+  namespace: {{ .Release.Namespace | quote }}
+spec:
+  storageClassName: {{ (print .Values.service "-accesslog-sc") | quote }}
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 200Mi

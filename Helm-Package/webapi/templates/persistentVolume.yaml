@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ (print .Values.service "-accesslog-pv") | quote }}
+spec:
+  capacity:
+    storage: 200Mi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: {{ (print .Values.service "-accesslog-sc") | quote }}
+  local:
+    path: /data/k8s-accesslog
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+{{- range .Values.accesslogHost }}
+          - {{ . | quote }}
+{{- end }}
