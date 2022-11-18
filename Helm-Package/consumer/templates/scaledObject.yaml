@@ -1,0 +1,18 @@
+{{- if .Values.kedaAutoscaling }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ .Values.service | lower | quote }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1  # Optional. Default: apps/v1
+    kind: Deployment     # Optional. Default: Deployment
+    name: {{ .Values.service | lower | quote }}         # Mandatory. Must be in the same namespace as the ScaledObject
+    # envSourceContainerName: {container-name}         # Optional. Default: .spec.template.spec.containers[0]
+  pollingInterval:  30                               # Optional. Default: 30 seconds
+  cooldownPeriod:   300                              # Optional. Default: 300 seconds
+  minReplicaCount:  {{ .Values.kedaAutoscaling.minReplicas }} # Optional. Default: 0
+  maxReplicaCount:  {{ .Values.kedaAutoscaling.maxReplicas }} # Optional. Default: 100
+  triggers:
+{{ toYaml .Values.kedaAutoscaling.triggers | indent 2 }}
+{{- end }}
