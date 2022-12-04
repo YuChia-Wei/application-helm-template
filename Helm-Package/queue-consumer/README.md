@@ -103,7 +103,7 @@ includes timeouts, circuit breakers, retires, and outlier detection.
 ### Kubernetes Pod Values
 
 These settings configure your service's resource constraints and health check
-probes. They ensure your service is a well behaved consumer of shared Kubernetes
+probes. They ensure your service is a well behaved queue-consumer of shared Kubernetes
 resources.
 
 * `resources.*` - Kubernetes resource request and limit configuration. See

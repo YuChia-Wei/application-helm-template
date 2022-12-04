@@ -1,4 +1,4 @@
-# Default values for consumer.
+# Default values for queue-consumer.
 # This is a YAML-formatted file.
 
 # The overall system your service is a part of
@@ -19,7 +19,7 @@ system: system-name
 #     5. HorizontalPodAutoscaler
 #     6. Deployment
 #     7. PodDisruptionBudget
-service: consumer
+service: queue-consumer
 
 # The major version number for your service
 version: 1
@@ -40,7 +40,7 @@ image:
 # Istio uses the service account name as a component of the service's security
 # identity. Set "create" to false to use an previously created service account.
 serviceAccount:
-  name: consumer-sa
+  name: queue-consumer-serviceaccount
   create: true
 
 # The initial number of pod replicas to run for your service
@@ -79,9 +79,9 @@ ports:
 # Configure the Istio ingress gateway to route outside traffic for the provided
 # host name to this service on the ports and protocols defined in the 'ports' section 
 # above. 
-# consumer 加入以下設定僅是為了確認部屬狀況，一般來說不需要特別建立服務進入點
+# queue-consumer 加入以下設定僅是為了確認部屬狀況，一般來說不需要特別建立服務進入點
 istioGateway:
-  name: consumer-gateway
+  name: queue-consumer-gateway
   host: ""
   matchPrefix: 
     - "/"
@@ -152,7 +152,3 @@ env:
   ASPNETCORE_ENVIRONMENT: "Release"
   # ASPNETCORE_ENVIRONMENT: "Stage"
   # ASPNETCORE_ENVIRONMENT: "Test"
-  # Exceptionless 相關資料，此處設定的資料會覆蓋掉 appsettings 內的設定
-  # Exceptionless__ApiKey: "-"
-  # Exceptionless__Enabled: "true"
-  # Exceptionless__ServerUrl: "http://exceptionless.mydomain.org"
