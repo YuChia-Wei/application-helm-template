@@ -43,7 +43,7 @@ image:
 # Istio uses the service account name as a component of the service's security
 # identity. Set "create" to false to use an previously created service account.
 serviceAccount:
-  name: webapi-sa
+  name: webapi-serviceaccount
   create: true
 
 # The initial number of pod replicas to run for your service
@@ -157,9 +157,3 @@ env:
   TZ: "Asia/Taipei"
   # .net 執行環境
   ASPNETCORE_ENVIRONMENT: "Release"
-  # ASPNETCORE_ENVIRONMENT: "Stage"
-  # ASPNETCORE_ENVIRONMENT: "Test"
-  # Exceptionless 相關資料，此處設定的資料會覆蓋掉 appsettings 內的設定
-  # Exceptionless__ApiKey: "-"
-  # Exceptionless__Enabled: "true"
-  # Exceptionless__ServerUrl: "http://exceptionless.mydomain.org"

@@ -34,7 +34,7 @@ image:
 # Istio uses the service account name as a component of the service's security
 # identity. Set "create" to false to use an previously created service account.
 serviceAccount:
-  name: nginx-server-sa
+  name: nginx-server-serviceaccount
   create: true
 
 # The initial number of pod replicas to run for your service
