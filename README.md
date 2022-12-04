@@ -2,28 +2,15 @@
 
 Kubernetes 部署套件 HELM 的基礎架構
 
-## 注意事項
+## 範本說明
 
-1. `Application-Base-On-Istio` 使用此範本前請確認以下工具已安裝於 kubernetes 網路叢集中
-    1. istio
-2. `Application-Base-On-Istio-Use-ArgoRollouts-Canary` 使用此範本前請確認以下工具已安裝於 kubernetes 網路叢集中
-    1. istio
-    2. Argo Rollout
-3. `Application-NginxIngress-Use-ArgoRollouts-Canary` **此範本尚未經過測試**
-    1. 使用此範本前請確認以下工具已安裝於 kubernetes 網路叢集中
-        1. Argo Rollout
-    2. 此範本中的 Rollout 設定可參考
-        1. [argo rollout getting started - nginx](https://argoproj.github.io/argo-rollouts/getting-started/nginx/)
-        2. [argo rollout traffic management - nginx](https://argoproj.github.io/argo-rollouts/features/traffic-management/nginx/)
-
-## 使用方式：
-
-1. 將 ServiceName 資料夾複製到 ArgoCD (或其他 GitOps 平台) 所使用的部署檔 Git Repo 之中
-2. 資料夾更名為你要部署的服務名稱
-3. 將資料夾內的 values-*.yaml 檔案開啟
-    1. 將 {$ServiceName} 替換為你要部署的服務名稱
-    2. 將 {$image-repo} docker image 來源
-    3. 將 {$ServiceDomain} 更換為該服務的 Domain
+| 名稱                                      | 說明                                                                                                                                                                                                                                                                                                                              |
+|-------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [nginx-server](./nginx-server)            | 沒有使用 istio 的基礎服務範本，也可以另外開啟 nginx ingress 與 argo rollout 支援，適合用在純前端或是不想用 istio 的後端服務。 **argo rollout 部分尚未進行測試**                                                                                                                                                                   |
+| [queue-consumer](./queue-consumer)        | 搭配 keda 的服務部署設定，有倚賴 istio，但是 istio 的倚賴有考慮移除，因為 consumer 通常不需要外部連入，也比較沒有藍綠部署、金絲雀部署等需求 (因為部署上去就會開始接收 Queue，分流控制通常不在 ingress 上)。</br>目前仍有 istio 相關設定的原因是，保留 health 等外部直接查看服務狀態的頁面，但若追蹤、Log 等機制完善後就不需要了。 |
+| [web-application](./web-application)      | 適合用在 .net MVC 的 Web Server，有倚賴 istio，可以開啟 argo rollout 支援。</br>有在 istio virtual service 中的 httpHeader 上加上 'x-forwarded-proto: https'                                                                                                                                                                      |
+| [webApi](./webapi)                        | 適合用在純後端服務，有倚賴 istio，可以開啟 argo rollout 支援。                                                                                                                                                                                                                                                                    |
+| [yarp gateway](./yarp-gateway-with-istio) | 大多數設定都與 [web-application](./web-application) 相同，但是因為主要要給 Yarp 做的 Gateway 使用，所以資源值沒有像 web application 那麼高。</br>有倚賴 istio，可以開啟 argo rollout 支援。                                                                                                                                       |
 
 ## Kubernetes 部署資源設定
 
@@ -33,64 +20,42 @@ Kubernetes 部署套件 HELM 的基礎架構
 ### 各環境建議值
 `此處相關數值僅供參考，limits 的部份請依據服務所需與可用資源定義最大值，requests 的部分須確認服務在中低負載下的基礎需求定義，過高可能會導致 kubernetes 認為目前叢集內無資源可部署服務而部署失敗，過低可能會在資源極度不足的狀況下仍部署該服務而導致整個叢集的效能低落。`
 
-* C# WebApi - Base on 6.0-bullseye-slim / 3.1-buster-slim
+* C# WebApi/Application - Base on bullseye-slim / buster-slim
 
 ```yaml
 resources:
   requests:
     memory: "400Mi"
-    cpu: "50m"
+    cpu: "200m"
   limits:
     memory: "800Mi"
-    cpu: "1000m"
+    cpu: "2000m"
 ```
 
-* C# WebApi - Base on 6.0-alpine
+* C# Application (Yarp Gateway) - Base on alpine
 
 ```yaml
 resources:
   requests:
     memory: "200Mi"
-    cpu: "50m"
+    cpu: "100m"
   limits:
     memory: "600Mi"
     cpu: "1000m"
 ```
 
-* C# Web (Angular) - Base on 6.0-bullseye-slim / 3.1-buster-slim
-
-```yaml
-resources:
-  requests:
-    memory: "200Mi"
-    cpu: "50m"
-  limits:
-    memory: "400Mi"
-    cpu: "500m"
-```
-
-* C# Web (Angular + WebApi) - Base on 6.0-bullseye-slim / 3.1-buster-slim
-
-```yaml
-resources:
-  requests:
-    memory: "400Mi"
-    cpu: "50m"
-  limits:
-    memory: "800Mi"
-    cpu: "1000m"
-```
-
 * Angular SPA - Base on nginx:alpine
+
+**如果有設定 nginx 上進行 gzip 壓縮的話，CPU 可以拉高一些**
 
 ```yaml
 resources:
   requests:
     memory: "100Mi"
-    cpu: "10m"
+    cpu: "100m"
   limits:
     memory: "200Mi"
-    cpu: "100m"
+    cpu: "500m"
 ```
 
 ## 命名相關建議

@@ -76,7 +76,6 @@ ports:
 httpHeaders:
   request:
     set:
-      # 加入此 Header 來讓後端 OAuth 可使用 (不是所有服務都需要)
       x-forwarded-proto: https
 
 # Configure the Istio ingress gateway to route outside traffic for the provided
@@ -87,6 +86,7 @@ istioGateway:
   host: ""
   matchPrefix:
     - "/"
+  uriRewrite: "/"
 
 # 服務超過多少時間回應 Gateway Timeout
 # The overall timeout for requests to this service
@@ -152,5 +152,3 @@ env:
   TZ: "Asia/Taipei"
   # .net 執行環境
   ASPNETCORE_ENVIRONMENT: "Release"
-  # ASPNETCORE_ENVIRONMENT: "Stage"
-  # ASPNETCORE_ENVIRONMENT: "Test"

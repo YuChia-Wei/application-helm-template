@@ -76,10 +76,6 @@ ports:
 httpHeaders:
   request:
     set:
-      # 在 Header 上面加入被 Gateway 複寫掉的 url 資訊，主要是讓服務內部組完整 URL 的時候可以組出正確的網址
-      # (不是所有服務都需要)
-      # proxy-removed-prefix: "/"
-      # 加入此 Header 來讓後端 OAuth 可使用 (不是所有服務都需要)
       x-forwarded-proto: https
 
 # Configure the Istio ingress gateway to route outside traffic for the provided
@@ -90,6 +86,7 @@ istioGateway:
   host: ""
   matchPrefix: 
     - "/"
+  uriRewrite: "/"
 
 # 服務超過多少時間回應 Gateway Timeout
 # The overall timeout for requests to this service
