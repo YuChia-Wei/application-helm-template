@@ -8,7 +8,12 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
   namespace: {{ .Release.Namespace | quote }}
 spec:
+{{- if ( default false .Values.useCanary ) }}
+  # ref: https://argoproj.github.io/argo-rollouts/migrating/
+  replicas: 0   # Scale down existing deployment
+{{- else }}
   replicas: {{ .Values.replicaCount }}
+{{- end }}
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   selector:
     matchLabels:

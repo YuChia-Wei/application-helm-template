@@ -1,6 +1,18 @@
 # Default values for nginx-server.
 # This is a YAML-formatted file.
 
+use: true
+# Configure the Istio ingress gateway to route outside traffic for the provided
+# host name to this service on the ports and protocols defined in the 'ports' section 
+# above. 
+nginxIngress:
+  enable: true
+  host: ""
+  path: "/"
+
+# Use Canary - Should be install ArgoRollout
+useCanary: true
+
 # The overall system your service is a part of
 system: system-name
 

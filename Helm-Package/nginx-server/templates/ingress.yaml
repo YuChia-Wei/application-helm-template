@@ -1,0 +1,26 @@
+{{- if ( default false .Values.nginxIngress.enable ) }}
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+{{- if ( default false .Values.useCanary ) }}
+  name: {{ (print .Values.service "-ingress-stable") | lower | quote }}
+{{- else }}
+  name: {{ (print .Values.service "-ingress") | lower | quote }}
+{{- end }}
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: {{ (print .Release.Namespace "/" .Values.nginxIngress.host ) }}
+    http:
+      paths:
+      - path: {{ .Values.nginxIngress.path ) }}
+        backend:
+{{- if ( default false .Values.useCanary ) }}
+          # Reference to a Service name, also specified in the Rollout spec.strategy.canary.stableService field
+          serviceName: {{ (print .Values.service "-stable") | lower | quote }}
+{{- else }}
+          serviceName: {{ (print .Values.service) | lower | quote }}
+{{- end }}
+          servicePort: 8080
+{{- end }}
