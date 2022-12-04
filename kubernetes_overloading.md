@@ -117,5 +117,5 @@ kubectl run --generator=run-pod/v1 -i --tty load-generator --image=busybox /bin/
 * [認識負載測試與 k6](https://editor.leonh.space/2021/introduction-of-load-testing-and-k6/)
 * [Kubernetes 動態建立 Jenkins Agent 壓力測試 (繁中翻譯版)](https://www.gushiciku.cn/pl/p99y/zh-tw)
 * [Kubernetes 動態建立 Jenkins Agent 壓力測試 (原始來源)](https://www.chenshaowen.com/blog/the-stress-test-about-kubernetes-dynamically-creates-jenkins-agent.html)
-* [isito envoy sidecar的全面性能压力测试](http://xiaorui.cc/archives/7239)
+* [istio envoy sidecar的全面性能压力测试](http://xiaorui.cc/archives/7239)
 * [Kubernetes系列之Kubernetes的弹性伸缩（HPA）](https://blog.51cto.com/79076431/2475855)
