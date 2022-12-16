@@ -142,6 +142,12 @@ probes:
       path: /health
       port: 80
 
+# .net 的追蹤設定，需要特別調整 dockerfile
+openTelemetry:
+  enable: true
+  otlpEndpoint: "http://otel-collector.kube-monitor.svc.cluster.local:4317"
+  otlpProtocol: "grpc"
+
 # 設定容器執行時的參數
 env:
   # 語言設定，依據 docker image 的 image base 使用的 linux 版本決定此參數是否有效
