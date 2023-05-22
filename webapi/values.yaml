@@ -111,7 +111,7 @@ outlierDetection:
 resources:
   requests:
     memory: "400Mi"
-    cpu: "50m"
+    cpu: "500m"
   limits:
     memory: "800Mi"
     cpu: "1000m"
@@ -145,11 +145,13 @@ probes:
       path: /health
       port: 80
 
-# .net 的追蹤設定，需要特別調整 dockerfile
+# .net 的追蹤設定，docker 建置時需要使用含有 open telemetry auto instrumentation 此工具的容器基底
 openTelemetry:
   enable: true
   otlpEndpoint: "http://otel-collector.kube-monitor.svc.cluster.local:4317"
   otlpProtocol: "grpc"
+  autoLogs: "true"
+  enableCLRProfiler: "0"
 
 # 設定容器執行時的參數
 env:
