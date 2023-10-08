@@ -148,7 +148,7 @@ openTelemetry:
   otlpEndpoint: "http://otel-collector.observability.svc.cluster.local:4317"
   otlpProtocol: "grpc"
   autoLogs: "true"
-  enableCLRProfiler: "0"
+  enableCLRProfiler: "1"
 
 # 設定容器執行時的參數
 env:

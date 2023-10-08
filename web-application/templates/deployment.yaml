@@ -49,8 +49,12 @@ spec:
             - configMapRef:
                 name: {{ (print .Values.service "-otel-env") | lower | quote }}
           {{- end }}
-          {{- if $.Values.env }}
           env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          {{- if $.Values.env }}
             {{- range $key, $value := $.Values.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}

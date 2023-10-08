@@ -19,14 +19,18 @@ data:
   OTEL_DOTNET_AUTO_HOME: "/otel-dotnet-auto"
   OTEL_DOTNET_AUTO_INTEGRATIONS_FILE: "/otel-dotnet-auto/integrations.json"
   OTEL_SERVICE_NAME: {{ .Values.service | lower | quote }}
-  OTEL_RESOURCE_ATTRIBUTES: "service.version={{ .Values.image.repository }}:{{ .Values.image.tag }}, service.namespace={{ .Release.Namespace }}, deployment.environment={{ .Values.env.ASPNETCORE_ENVIRONMENT }}"
+# 最後的 deployment.environment 設定建議由對應環境的收集器決定，同時這代表你的資料應該送給跟服務部署相同環境的收集器
+#   OTEL_RESOURCE_ATTRIBUTES: "service.version={{ .Values.image.repository }}:{{ .Values.image.tag }}, service.namespace={{ .Release.Namespace }}, deployment.environment={{ .Values.env.ASPNETCORE_ENVIRONMENT }}"
+  OTEL_RESOURCE_ATTRIBUTES: "service.version={{ .Values.image.repository }}:{{ .Values.image.tag }}, service.namespace={{ .Release.Namespace }}"
   OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.openTelemetry.otlpEndpoint | default "http://otel-collector.observability.svc.cluster.local:4317" }}
   OTEL_EXPORTER_OTLP_PROTOCOL: {{ .Values.openTelemetry.otlpProtocol | default "grpc" }}
   OTEL_DOTNET_AUTO_LOGS_ENABLED: {{ .Values.openTelemetry.autoLogs | default "false" | quote }}
   OTEL_DOTNET_AUTO_LOGS_INCLUDE_FORMATTED_MESSAGE: {{ .Values.openTelemetry.autoLogsIncludeFormatted | default "true" | quote }}
+# 這邊的兩個資源應該要依據服務中的埋點設定決定
   OTEL_DOTNET_AUTO_TRACES_ADDITIONAL_SOURCES: {{ .Values.service | lower | quote }}
   OTEL_DOTNET_AUTO_METRICS_ADDITIONAL_SOURCES: {{ .Values.service | lower | quote }}
-  Logging__OpenTelemetry__IncludeScopes: "true"
   Logging__Console__FormatterName: "Simple"
   Logging__Console__FormatterOptions__SingleLine: "true"
+  Logging__OpenTelemetry__IncludeScopes: "true"
+  Logging__OpenTelemetry__LogLevel__Default: "Information"
 {{- end }}
